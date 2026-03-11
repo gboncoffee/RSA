@@ -2,6 +2,7 @@
 #include <openssl/types.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define NBITS 256
 
@@ -14,7 +15,20 @@ void printBN(char *msg, BIGNUM *a) {
 }
 
 int main() {
-  char *s = malloc(NBITS * sizeof(char));
+  char *s = malloc((NBITS) * sizeof(char));
+
+  if (scanf("%255s", s) != 1) {
+    fprintf(stderr, "Failed to read input\n");
+    free(s);
+    return 1;
+  }
+
+  if (strlen(s) >= (NBITS / 8)) {
+    fprintf(stderr, "Input too long (max %d hex digits)\n", NBITS / 8 - 1);
+    free(s);
+    return 1;
+  }
+
   BN_CTX *ctx = BN_CTX_new();
 
   BIGNUM *p = BN_new();
@@ -54,7 +68,6 @@ int main() {
   // d = e^-1 mod lambda(n)
   BN_mod_inverse(d, e, lambda, ctx);
 
-  scanf("%s", s);
   BN_hex2bn(&m, s);
 
   // c = m^e mod n
