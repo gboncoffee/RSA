@@ -1,8 +1,8 @@
 
-all: bn_sample
+all: rsa
 
-bn_sample: bn_sample.c
-	gcc bn_sample.c -o bn_sample -lcrypto
+rsa: rsa.c
+	gcc rsa.c -o rsa -lcrypto
 
 clean:
-	rm -f bn_sample *.o
+	rm -f rsa *.o
