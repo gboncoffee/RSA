@@ -20,6 +20,8 @@ void deriveRSAKeys(BN_CTX *ctx, const char *p, const char *q, const char *e,
   BN_hex2bn(&pminus1, p);
   BN_hex2bn(&qminus1, q);
 
+  BN_mul(nRet, pminus1, qminus1, ctx);
+
   BN_sub_word(pminus1, 1);
   BN_sub_word(qminus1, 1);
 
@@ -61,6 +63,7 @@ void task1(BN_CTX *ctx) {
 
   printf("=== task 1 ===\n");
   printBN("Private key: ", privateKey);
+  printBN("N: ", n);
 
   BN_free(n);
   BN_free(publicKey);
